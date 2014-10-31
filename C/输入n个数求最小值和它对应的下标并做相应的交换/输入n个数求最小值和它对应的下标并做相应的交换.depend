@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1391311081 source:h:\假期c语言练习\输入n个数求最小值和它对应的下标并做相应的交换\main.c
+	<stdio.h>
+	<stdlib.h>
+

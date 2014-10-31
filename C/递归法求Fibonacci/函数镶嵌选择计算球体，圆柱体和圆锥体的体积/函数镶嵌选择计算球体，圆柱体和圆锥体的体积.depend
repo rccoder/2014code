@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390882787 source:h:\假期c语言练习\函数镶嵌选择计算球体，圆柱体和圆锥体的体积\main.c
+	<stdio.h>
+	<stdlib.h>
+

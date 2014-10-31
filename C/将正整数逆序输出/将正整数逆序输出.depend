@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390365777 source:h:\假期c语言练习\将正整数逆序输出\main.c
+	<stdio.h>
+	<stdlib.h>
+

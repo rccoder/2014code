@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390291690 source:h:\假期c语言练习\求班级平均分\main.c
+	<stdio.h>
+	<stdlib.h>
+

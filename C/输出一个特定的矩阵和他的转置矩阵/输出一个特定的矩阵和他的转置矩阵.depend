@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1391570669 source:h:\假期c语言练习\输出一个特定的矩阵和他的转置矩阵\main.c
+	<stdio.h>
+	<stdlib.h>
+

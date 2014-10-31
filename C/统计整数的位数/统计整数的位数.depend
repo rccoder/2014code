@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390292536 source:h:\假期c语言练习\统计整数的位数\main.c
+	<stdio.h>
+	<stdlib.h>
+

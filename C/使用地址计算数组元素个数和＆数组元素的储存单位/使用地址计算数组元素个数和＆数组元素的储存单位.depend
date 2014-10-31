@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1391747548 source:h:\假期c语言练习\使用地址计算数组元素个数和＆数组元素的储存单位\main.c
+	<stdio.h>
+	<stdlib.h>
+

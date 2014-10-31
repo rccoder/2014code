@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1390385279 source:h:\假期c语言练习\判断一个数是否为素数\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

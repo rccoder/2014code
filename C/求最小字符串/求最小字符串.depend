@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1391840305 source:h:\假期c语言练习\求最小字符串\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

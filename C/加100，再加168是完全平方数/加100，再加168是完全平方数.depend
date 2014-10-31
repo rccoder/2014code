@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1389777944 source:h:\假期c语言练习\加100，再加168是完全平方数\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

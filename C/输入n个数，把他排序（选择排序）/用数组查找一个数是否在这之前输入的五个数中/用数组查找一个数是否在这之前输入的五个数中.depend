@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1391230450 source:h:\假期c语言练习\用数组查找一个数是否在这之前输入的五个数中\main.c
+	<stdio.h>
+	<stdlib.h>
+

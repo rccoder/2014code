@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390528346 source:h:\假期c语言练习\格里高利公式求pi得近似值\main.c
+	<stdio.h>
+	<stdlib.h>
+

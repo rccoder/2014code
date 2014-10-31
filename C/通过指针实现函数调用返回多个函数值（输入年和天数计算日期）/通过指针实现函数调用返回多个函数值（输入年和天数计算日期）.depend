@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1391664533 source:h:\假期c语言练习\通过指针实现函数调用返回多个函数值（输入年和天数计算日期）\main.c
+	<stdio.h>
+	<stdlib.h>
+

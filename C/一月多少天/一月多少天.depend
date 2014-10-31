@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1394807384 source:h:\假期c语言练习\一月多少天\main.c
+	<stdio.h>
+	<time.h>
+

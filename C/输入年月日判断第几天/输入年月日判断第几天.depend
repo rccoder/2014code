@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1390268578 source:h:\假期c语言练习\输入年月日判断第几天\main.c
+	<stdio.h>
+	<stdlib.h>
+
