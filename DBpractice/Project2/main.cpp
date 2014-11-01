@@ -1,154 +1,245 @@
 #include <iostream>
 #include <stdlib.h>
-#include <stack>
-#define N 100
-#define MaxSize 1000
+#define MaxSize 100
 using namespace std;
 /*
-*define a structure about tree
+*定义树的结构，左儿子的指针和右儿子的指针，树的data域
 */
-struct node
+struct BTtree
 {
-    node * lchild;
+    BTtree *lchild;
     char data;
-    node * rchild;
+    BTtree *rchild;
 };
-typedef node *BTREE;
 /*
-*define a stack
+*用于广义表的存储
 */
-typedef node * ElemType;
-struct Stack
+char withList[100];
+int i = 0;
+/*
+*递归实现二叉树的储存
+*/
+BTtree * preCreateTree()
 {
-    ElemType s[MaxSize];
-    int top;
-};
+    char ch;
+    BTtree *BT;
+    cin >> ch;
+    if(ch == '#')
+    {
+        BT = NULL;
+    }
+    else
+    {
+        BT = new BTtree;
+        BT -> data = ch;
+        cout << "输入" << ch << "的左子树" << endl;
+        BT -> lchild = preCreateTree();
+        cout << "输入" << ch << "的右字数" << endl;
+        BT -> rchild = preCreateTree();
+    }
+    return BT;
+}
+/*
+*前序递归遍历
+*/
+void listTreePre(BTtree * BT)
+{
+    if(BT != NULL)
+    {
+        cout << BT ->data << " ";
+        listTreePre(BT -> lchild);
+        listTreePre(BT -> rchild);
+    }
+}
+/*
+*中序递归遍历
+*/
+void listTreeMid(BTtree * BT)
+{
+    if(BT != NULL)
+    {
+        listTreeMid(BT -> lchild);
+        cout << BT -> data << " ";
+        listTreeMid(BT -> rchild);
+    }
+}
+/*
+*后序递归遍历
+*/
+void listTreeBeh(BTtree * BT)
+{
+    if(BT != NULL)
+    {
+        listTreeBeh(BT -> lchild);
+        listTreeBeh(BT -> rchild);
+        cout << BT -> data << " ";
+    }
+}
+/*
+*前序非递归遍历
+*/
+void listTreePreNoRe(BTtree * BT)
+{
+    BTtree *S[MaxSize];
+    int top = MaxSize;
+    while(BT != NULL || top != MaxSize)
+    {
+        while(BT !=NULL)
+        {
+            //一直往做走
+            cout << BT -> data << " ";
+            S[--top] = BT;
+            BT = BT -> lchild;
+        }
+        if(top != MaxSize)
+        {
+            //往上反一个
+            BT = S[top++];
+            BT = BT -> rchild;
+        }
+    }
 
-void MakeNull(Stack &S)
-{
-    S.top = -1;
 }
-void push(Stack &S, ElemType item)
+/*
+*中序非递归遍历
+*/
+void listTreeMidNoRe(BTtree * BT)
 {
-    if(S.top == MaxSize-1)
+    BTtree *S[MaxSize];
+    int top = MaxSize;
+    while(BT != NULL || top != MaxSize)
     {
-        cout << "��ջ������" << endl;
-    }
-    else
-    {
-        S.s[++S.top] = item;
-    }
-}
-ElemType pop(Stack &S)
-{
-    if(S.top == -1)
-    {
-        cout << "��ջ" << endl;
-    }
-    else
-    {
-        return S.s[S.top --];
-    }
-}
-ElemType peek(Stack &S)
-{
-    if(S.top == -1)
-    {
-        cout << "��ջ" << endl;
-    }
-    else
-    {
-        return S.s[S.top];
-    }
-}
-void ToTree(char ch[], BTREE &BT)
-{
-    Stack S;
-    MakeNull(S);
-    int i = 0;
-    struct node *p = BT;//pָBT
-    struct node *q = NULL;
-    while(ch[i] != '\0')
-    {
-        if(ch[i] != '(' && ch[i] != ')' && ch[i] != ',')
+        while(BT !=NULL)
         {
-            //֮ǰָ����Ѿ�ָ��λ��
-            p -> data = ch[i];
-            cout << 1 << endl;
+            S[--top] = BT;
+            BT = BT -> lchild;
         }
-        else if(ch[i] == '(')
+        if(top != MaxSize)
         {
-            push(S, p);
-            if(ch[i+1] != ',')//�����Ҷ��ӵ������c(, d)��Ԥ����
+            //上一层
+            BT = S[top++];
+            cout << BT -> data << " ";
+            BT = BT -> rchild;
+        }
+    }
+}
+/*
+*后序非递归排序
+*/
+void listTreeBehNoRe(BTtree * BT)
+{
+    struct tep
+    {
+        BTtree *tree;
+        int flag;
+    }S[MaxSize];
+    int top = MaxSize;
+
+    BTtree * tepTree = BT;
+    while(tepTree !=NULL || top != MaxSize)
+    {
+        if(tepTree != NULL)
+        {
+            //一直往左走，保存入栈
+            S[--top].tree = tepTree;
+            S[top].flag = 1;
+            tepTree = tepTree -> lchild;
+        }
+        else
+        {
+            if(S[top].flag == 2)
             {
-                p ->lchild = new node;
-                p = p -> lchild;
-                p -> lchild = NULL;
-                p -> rchild = NULL;
+                BT = S[top++].tree;
+                cout << BT -> data << " ";
+            }
+            else
+            {
+                //没有左子树，去右子树看看
+                S[top].flag = 2;
+                tepTree = S[top].tree -> rchild;
             }
         }
-        //ֻ���Ҷ��ӵ����
-        else if(ch[i] == ',')
-        {
-            p = peek(S);
-            p -> rchild = new node;
-            p = p -> rchild;
-            p -> lchild = NULL;
-            p -> rchild = NULL;
-        }
-        else if(ch[i] == ')')
-        {
-            q = peek(S);
-            q -> lchild -> lchild = NULL;
-            q -> lchild -> rchild = NULL;
-            pop(S);
-            //���ñ�־
-        }
-        i++;
     }
+
 }
-void ToList(BTREE p)
+void listTree(BTtree * BT)
 {
-    if(p != NULL)
+    cout << "=递归实现：=" << endl << endl;
+    cout << "先序遍历:" << endl;
+    listTreePre(BT);
+    cout << endl;
+    cout << "中序遍历:" << endl;
+    listTreeMid(BT);
+    cout << endl;
+    cout << "后序遍历:" << endl;
+    listTreeBeh(BT);
+    cout << endl << "=非递归实现：=" << endl << endl;
+    cout << "先序遍历:" << endl;
+    listTreePreNoRe(BT);
+    cout << endl;
+    cout << "中序遍历:" << endl;
+    listTreeMidNoRe(BT);
+    cout << endl;
+    cout << "后序遍历:" << endl;
+    listTreeBehNoRe(BT);
+}
+/*
+*广义表的输出
+*递归操作，所以对存广义表的数组和控制下标变量是全局变量
+*/
+void printWithList(BTtree * BT)
+{
+    if(BT != NULL)
     {
-        cout << p -> data;
-        cout << 1 << endl;
-        if(p -> lchild != NULL || p -> rchild !=NULL)
+        if(BT -> lchild == NULL && BT -> rchild == NULL)
         {
-            cout << '(';
-            ToList(p -> lchild);
-            if(p -> rchild != NULL)
-            {
-                cout << ",";
-            }
-            ToList(p -> rchild);
-            cout << ")";
+            withList[i++] = BT -> data;
+        }
+        else
+        {
+            withList[i++] = BT -> data;
+            withList[i++] = '(';
+            printWithList(BT -> lchild);
+            withList[i++] = ',';
+            printWithList(BT -> rchild);
+            withList[i++] = ')';
         }
     }
 }
-void EmptyBT(BTREE &BT)
+void printList(BTtree *BT)
 {
-    BT = new node;
-    BT -> lchild = NULL;
-    BT -> rchild = NULL;
-}
-BTREE CreateBT(char ch, BTREE ltree, BTREE rtree)
-{
-    BTREE root;
-    root = new node;
-    root -> data = ch;
-    root -> lchild = ltree;
-    root -> rchild = rtree;
-    return root;
+    BTtree *tep = BT;
+    i = 0;
+    withList[i] = '(';
+    i++;
+    printWithList(tep);
+    withList[i] = ')';
+    i++;
+    withList[i] = '\0';
 }
 int main()
 {
-    char ch[N];
-    BTREE BT;
-    cout << "�����������:" << endl;
-    cin.getline(ch, N);
-    ToTree(ch, BT);
-    cout << "������Ķ�����Ϊ��" << endl;
-    ToList(BT);
-    return 0;
+    BTtree *pre_tree = NULL;
+    BTtree *lev_tree = NULL;
+    int n;
+    //菜单的建立
+    cout << "输入数字选择菜单：" << endl << "1.递归建立二叉树" << endl << "2.xxxxx" << endl << endl;
+    cin >> n;
+    if(n == 1)
+    {
+        cout << "说明：#代表空" << endl << "输入根节点" << endl << endl;
+        //递归建立二叉树
+        pre_tree = preCreateTree();
+        cout << "树的储存已经完成！" << endl << endl;
+        cout << "===广义表的输出===" << endl;
+        printList(pre_tree);
+        cout << withList << endl << endl;
+        //开始树的遍历
+        cout <<"===开始树的遍历操作==="<< endl << endl;
+        listTree(pre_tree);
+    }
+    else if(n == 2)
+    {
+
+    }
 }
