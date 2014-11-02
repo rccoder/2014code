@@ -3,21 +3,25 @@
 #define MaxSize 100
 using namespace std;
 /*
-*å®šä¹‰æ ‘çš„ç»“æ„ï¼Œå·¦å„¿å­çš„æŒ‡é’ˆå’Œå³å„¿å­çš„æŒ‡é’ˆï¼Œæ ‘çš„dataåŸŸ
+*¶¨ÒåÊ÷µÄ½á¹¹£¬×ó¶ù×ÓµÄÖ¸ÕëºÍÓÒ¶ù×ÓµÄÖ¸Õë£¬Ê÷µÄdataÓò
 */
 struct BTtree
 {
     BTtree *lchild;
     char data;
     BTtree *rchild;
+    bool ltag;
+    bool rtag;
 };
 /*
-*ç”¨äºå¹¿ä¹‰è¡¨çš„å­˜å‚¨
+*ÓÃÓÚ¹ãÒå±íµÄ´æ´¢
 */
 char withList[100];
 int i = 0;
+//¸Õ·ÃÎÊ¹ıµÄ½Úµã
+BTtree pre;
 /*
-*é€’å½’å®ç°äºŒå‰æ ‘çš„å‚¨å­˜
+*µİ¹éÊµÏÖ¶ş²æÊ÷µÄ´¢´æ
 */
 BTtree * preCreateTree()
 {
@@ -32,15 +36,17 @@ BTtree * preCreateTree()
     {
         BT = new BTtree;
         BT -> data = ch;
-        cout << "è¾“å…¥" << ch << "çš„å·¦å­æ ‘" << endl;
+        BT -> ltag = false;
+        BT -> rtag = false;
+        cout << "ÊäÈë" << ch << "µÄ×ó×ÓÊ÷" << endl;
         BT -> lchild = preCreateTree();
-        cout << "è¾“å…¥" << ch << "çš„å³å­—æ•°" << endl;
+        cout << "ÊäÈë" << ch << "µÄÓÒ×ÖÊı" << endl;
         BT -> rchild = preCreateTree();
     }
     return BT;
 }
 /*
-*å‰åºé€’å½’éå†
+*Ç°Ğòµİ¹é±éÀú
 */
 void listTreePre(BTtree * BT)
 {
@@ -52,7 +58,7 @@ void listTreePre(BTtree * BT)
     }
 }
 /*
-*ä¸­åºé€’å½’éå†
+*ÖĞĞòµİ¹é±éÀú
 */
 void listTreeMid(BTtree * BT)
 {
@@ -64,7 +70,7 @@ void listTreeMid(BTtree * BT)
     }
 }
 /*
-*ååºé€’å½’éå†
+*ºóĞòµİ¹é±éÀú
 */
 void listTreeBeh(BTtree * BT)
 {
@@ -76,7 +82,7 @@ void listTreeBeh(BTtree * BT)
     }
 }
 /*
-*å‰åºéé€’å½’éå†
+*Ç°Ğò·Çµİ¹é±éÀú
 */
 void listTreePreNoRe(BTtree * BT)
 {
@@ -86,14 +92,14 @@ void listTreePreNoRe(BTtree * BT)
     {
         while(BT !=NULL)
         {
-            //ä¸€ç›´å¾€åšèµ°
+            //Ò»Ö±Íù×ö×ß
             cout << BT -> data << " ";
             S[--top] = BT;
             BT = BT -> lchild;
         }
         if(top != MaxSize)
         {
-            //å¾€ä¸Šåä¸€ä¸ª
+            //ÍùÉÏ·´Ò»¸ö
             BT = S[top++];
             BT = BT -> rchild;
         }
@@ -101,7 +107,7 @@ void listTreePreNoRe(BTtree * BT)
 
 }
 /*
-*ä¸­åºéé€’å½’éå†
+*ÖĞĞò·Çµİ¹é±éÀú
 */
 void listTreeMidNoRe(BTtree * BT)
 {
@@ -116,7 +122,7 @@ void listTreeMidNoRe(BTtree * BT)
         }
         if(top != MaxSize)
         {
-            //ä¸Šä¸€å±‚
+            //ÉÏÒ»²ã
             BT = S[top++];
             cout << BT -> data << " ";
             BT = BT -> rchild;
@@ -124,7 +130,7 @@ void listTreeMidNoRe(BTtree * BT)
     }
 }
 /*
-*ååºéé€’å½’æ’åº
+*ºóĞò·Çµİ¹éÅÅĞò
 */
 void listTreeBehNoRe(BTtree * BT)
 {
@@ -132,7 +138,7 @@ void listTreeBehNoRe(BTtree * BT)
     {
         BTtree *tree;
         int flag;
-    }S[MaxSize];
+    } S[MaxSize];
     int top = MaxSize;
 
     BTtree * tepTree = BT;
@@ -140,7 +146,7 @@ void listTreeBehNoRe(BTtree * BT)
     {
         if(tepTree != NULL)
         {
-            //ä¸€ç›´å¾€å·¦èµ°ï¼Œä¿å­˜å…¥æ ˆ
+            //Ò»Ö±Íù×ó×ß£¬±£´æÈëÕ»
             S[--top].tree = tepTree;
             S[top].flag = 1;
             tepTree = tepTree -> lchild;
@@ -154,7 +160,7 @@ void listTreeBehNoRe(BTtree * BT)
             }
             else
             {
-                //æ²¡æœ‰å·¦å­æ ‘ï¼Œå»å³å­æ ‘çœ‹çœ‹
+                //Ã»ÓĞ×ó×ÓÊ÷£¬È¥ÓÒ×ÓÊ÷¿´¿´
                 S[top].flag = 2;
                 tepTree = S[top].tree -> rchild;
             }
@@ -164,28 +170,28 @@ void listTreeBehNoRe(BTtree * BT)
 }
 void listTree(BTtree * BT)
 {
-    cout << "=é€’å½’å®ç°ï¼š=" << endl << endl;
-    cout << "å…ˆåºéå†:" << endl;
+    cout << "=µİ¹éÊµÏÖ£º=" << endl << endl;
+    cout << "ÏÈĞò±éÀú:" << endl;
     listTreePre(BT);
     cout << endl;
-    cout << "ä¸­åºéå†:" << endl;
+    cout << "ÖĞĞò±éÀú:" << endl;
     listTreeMid(BT);
     cout << endl;
-    cout << "ååºéå†:" << endl;
+    cout << "ºóĞò±éÀú:" << endl;
     listTreeBeh(BT);
-    cout << endl << "=éé€’å½’å®ç°ï¼š=" << endl << endl;
-    cout << "å…ˆåºéå†:" << endl;
+    cout << endl << "=·Çµİ¹éÊµÏÖ£º=" << endl << endl;
+    cout << "ÏÈĞò±éÀú:" << endl;
     listTreePreNoRe(BT);
     cout << endl;
-    cout << "ä¸­åºéå†:" << endl;
+    cout << "ÖĞĞò±éÀú:" << endl;
     listTreeMidNoRe(BT);
     cout << endl;
-    cout << "ååºéå†:" << endl;
+    cout << "ºóĞò±éÀú:" << endl;
     listTreeBehNoRe(BT);
 }
 /*
-*å¹¿ä¹‰è¡¨çš„è¾“å‡º
-*é€’å½’æ“ä½œï¼Œæ‰€ä»¥å¯¹å­˜å¹¿ä¹‰è¡¨çš„æ•°ç»„å’Œæ§åˆ¶ä¸‹æ ‡å˜é‡æ˜¯å…¨å±€å˜é‡
+*¹ãÒå±íµÄÊä³ö
+*µİ¹é²Ù×÷£¬ËùÒÔ¶Ô´æ¹ãÒå±íµÄÊı×éºÍ¿ØÖÆÏÂ±ê±äÁ¿ÊÇÈ«¾Ö±äÁ¿
 */
 void printWithList(BTtree * BT)
 {
@@ -217,29 +223,152 @@ void printList(BTtree *BT)
     i++;
     withList[i] = '\0';
 }
+/*
+*
+*/
+BTtree * levCreateTree()
+{
+    int m, l;
+    char ch;
+    BTtree * S[MaxSize];
+    BTtree * BT, * tep;
+    cout << "ÊäÈë½áµãÊı£º";
+    cin >> m;
+    cout << "ÊäÈëdataÓò:";
+    cin >> ch;
+    while(m != 0 || ch != '#')
+    {
+        tep = new BTtree;
+        tep -> data = ch;
+        tep -> lchild = NULL;
+        tep -> rchild = NULL;
+        S[m] = tep;
+        if(m == 1)
+            BT = tep;
+        else
+        {
+            l = m/2;
+            if(m % 2 == 0)
+            {
+                S[l] -> lchild = tep;
+            }
+            else
+            {
+                S[l] -> rchild = tep;
+            }
+        }
+        cout << "ÊäÈë½áµãÊı£º" << endl;
+        cin >> m;
+        cout << "ÊäÈëdataÓò:" << endl;
+        cin >> ch;
+        cout << "m" << m << "ch:" << ch << endl;
+    }
+    return BT;
+}
+/*
+*ÖĞĞò¶ş²æÊ÷ÏßË÷»¯
+*/
+void miding(BTtree p)
+{
+    if(p != NULL)
+    {
+        miding(p -> lchild);
+        if(!p -> lchild)
+        {
+            p -> lchild = pre;
+            p -> ltag = true;
+        }
+        if(!pre ->rchild)
+        {
+            p -> rchild = pre;
+            pre -> rtag = true;
+        }
+        pre = p;
+        midding(p -> rchild);
+    }
+}
+bool toTreeListMid(BTtree * BT, BTtree &HEAD)
+{
+    miding(BTtree p);
+    HEAD = new BTtree;
+    HEAD -> ltag = false;
+    HEAD -> rtag = true;
+    HEAD -> rchild = HEAD;
+    if(BT == NULL)
+    {
+        HEAD -> lchild = HEAD;
+    }
+    else
+    {
+        HEAD -> lchild = BT;
+        pre = HEAD;
+        miding(BT);
+        pre -> rchild = HEAD;
+        pre -> rtag = true;
+        HEAD -> rchild = pre;
+    }
+    return 1;
+}
+void toTreeListMidPrint(BTtree HEAD)
+{
+    BTtree p = HEAD -> lchild;
+    while(p != HEAD)
+    {
+        while(HEAD -> ltag == false)
+        {
+            p = p -> lchild;
+        }
+        cout << p -> data << "->";
+        while(p -> rtag == true && p -> rchild != HEAD)
+        {
+            p = p -> rchild;
+            cout << p -> data << endl << p -> data << "->";
+        }
+        p = p -> rchild;
+    }
+}
+void toTreeList(BTtree * BT)
+{
+    //Í·½Úµã
+    BTtree * HEAD;
+    cout << "==ÖĞĞò==" << endl;
+    toTreeListMid(BT, HEAD);
+    cout << "±éÀúÖĞĞòÏßË÷»¯¶ş²æÊ÷" << endl;
+    toTreeListMidPrint(HEAD);
+
+}
 int main()
 {
     BTtree *pre_tree = NULL;
     BTtree *lev_tree = NULL;
     int n;
-    //èœå•çš„å»ºç«‹
-    cout << "è¾“å…¥æ•°å­—é€‰æ‹©èœå•ï¼š" << endl << "1.é€’å½’å»ºç«‹äºŒå‰æ ‘" << endl << "2.xxxxx" << endl << endl;
+    //²Ëµ¥µÄ½¨Á¢
+    cout << "ÊäÈëÊı×ÖÑ¡Ôñ²Ëµ¥£º" << endl << "1.µİ¹é½¨Á¢¶ş²æÊ÷" << endl << "2.ÊäÈë½áµãµÄÊı½¨Á¢¶ş²æÊ÷" << endl << endl;
     cin >> n;
     if(n == 1)
     {
-        cout << "è¯´æ˜ï¼š#ä»£è¡¨ç©º" << endl << "è¾“å…¥æ ¹èŠ‚ç‚¹" << endl << endl;
-        //é€’å½’å»ºç«‹äºŒå‰æ ‘
+        cout << "ËµÃ÷£º#´ú±í¿Õ" << endl << "ÊäÈë¸ù½Úµã" << endl << endl;
+        //µİ¹é½¨Á¢¶ş²æÊ÷
         pre_tree = preCreateTree();
-        cout << "æ ‘çš„å‚¨å­˜å·²ç»å®Œæˆï¼" << endl << endl;
-        cout << "===å¹¿ä¹‰è¡¨çš„è¾“å‡º===" << endl;
+        cout << "Ê÷µÄ´¢´æÒÑ¾­Íê³É£¡" << endl << endl;
+        cout << "===¹ãÒå±íµÄÊä³ö===" << endl;
         printList(pre_tree);
         cout << withList << endl << endl;
-        //å¼€å§‹æ ‘çš„éå†
-        cout <<"===å¼€å§‹æ ‘çš„éå†æ“ä½œ==="<< endl << endl;
+        //¿ªÊ¼Ê÷µÄ±éÀú
+        cout <<"===¿ªÊ¼Ê÷µÄ±éÀú²Ù×÷==="<< endl << endl;
         listTree(pre_tree);
     }
     else if(n == 2)
     {
-
+        lev_tree = levCreateTree();
+        cout << "Ê÷µÄ´¢´æÒÑ¾­Íê³É£¡" << endl << endl;
+        cout << "===¹ãÒå±íµÄÊä³ö===" << endl;
+        printList(lev_tree);
+        cout << withList << endl << endl;
+        //¿ªÊ¼Ê÷µÄ±éÀú
+        cout <<"===¿ªÊ¼Ê÷µÄ±éÀú²Ù×÷==="<< endl << endl;
+        listTree(lev_tree);
     }
+    cout << "===Ê÷µÄÏßË÷»¯===" << endl;
+    toTreeList(pre_tree);
 }
