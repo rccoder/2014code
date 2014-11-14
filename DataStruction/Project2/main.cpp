@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <string.h>
 #define MaxSize 100
 using namespace std;
 /*
@@ -468,6 +469,9 @@ BTtree toTreeListBeh(BTtree &BT)
     }
     return beh;
 }
+/*
+*找爸爸
+*/
 BTtree Parent(BTtree & HEAD, BTtree & p)
 {
     BTtree tep;
@@ -541,6 +545,9 @@ void toTreeListBehPrint(BTtree HEAD)
         cout << p -> data << endl;
     }
 }
+/*
+*线索化之后reset一下HEAD，BT等东西，防止影响下一个线索化
+*/
 void resetTreeList(BTtree HEAD, BTtree &BT)
 {
     BTtree p, post;
@@ -566,6 +573,9 @@ void resetTreeList(BTtree HEAD, BTtree &BT)
     BT = HEAD -> lchild;
     delete(HEAD);
 }
+/*
+*线索化二叉树的主函数
+*/
 void toTreeList(BTtree * BT)
 {
     //头节点
@@ -574,16 +584,19 @@ void toTreeList(BTtree * BT)
     toTreeListPre(BT, HEAD);
     cout << "遍历前序线索化二叉树：" << endl;
     toTreeListPrePrint(HEAD);
+    resetTreeList(HEAD, BT);
     cout << "==中序==" << endl;
     toTreeListMid(BT, HEAD);
     cout << "遍历中序线索化二叉树：" << endl;
     toTreeListMidPrint(HEAD);
+    resetTreeList(HEAD, BT);
     cout << "==后序==" << endl;
     BTtree beh;
     //会改变BT
     beh = toTreeListBehPrint(BT);
     cout <<　"遍历后序线索化二叉树：" << endl;
     toTreeListBehPrint(beh);
+    resetTreeList(ben, BT);
 }
 //主函数
 int main()
