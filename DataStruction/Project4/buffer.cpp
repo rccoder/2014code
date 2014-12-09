@@ -209,7 +209,7 @@ int main()
 			cin >> n;
 			break;
 		case 3:
-			cout << "Please Input the number What You want to Input:" << endl;
+			cout << "Please Input the number What You want to Insert:" << endl;
 			cin >> ch;
 			Insert(ch, &F);
 			cout << "Now, The tree is:" << endl;
